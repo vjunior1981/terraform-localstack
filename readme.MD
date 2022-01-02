@@ -10,7 +10,8 @@
 #### Instalando o `asdf`:
 ```bash
 ## instalando asdf com git (universal installer):
-[vitorjr@0x564a520a ~]$ git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch release-v0.10.0
+[vitorjr@0x564a520a ~]$ git clone https://github.com/asdf-vm/asdf.git \
+~/.asdf --branch release-v0.10.0
 
 ## se você utiliza bash, adicione essas linhas ao seu ~/.bashrc:
 # adiciona ao PATH
@@ -42,8 +43,8 @@ drwxr-xr-x 306 vitorjr staff 9792 Nov 30 13:49 ..
 -rw-r--r--   1 vitorjr staff  717 Apr  1  2021 README.md
 -rw-r--r--   1 vitorjr staff  562 Apr  1  2021 asdf.plugin.zsh
 
-# caso não utilize oh-my-zsh, ainda assim é possível
-# copiar o plugin aqui: https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/asdf/asdf.plugin.zsh
+# caso não utilize oh-my-zsh, ainda assim é possível copiar o plugin aqui:
+# https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/asdf/asdf.plugin.zsh
 # edite seu ~/.zshrc e adicione a entrada dentro da sessão de plugins:
 plugins=(
     ...
@@ -89,44 +90,14 @@ python 3.8.12
 
 # instalando a última versão disponível:
 [vitorjr@0x564a520a ~]$ asdf install terraform latest
-Downloading terraform version 1.1.2 from https://releases.hashicorp.com/terraform/1.1.2/terraform_1.1.2_darwin_amd64.zip
-Verifying signatures and checksums
-gpg: keybox '/var/folders/5q/qbppj_gx30s7f4z_535ddh_m0000gn/T/asdf_terraform_KlcZm5/pubring.kbx' created
-gpg: /var/folders/5q/qbppj_gx30s7f4z_535ddh_m0000gn/T/asdf_terraform_KlcZm5/trustdb.gpg: trustdb created
-gpg: key 34365D9472D7468F: public key "HashiCorp Security (hashicorp.com/security) <security@hashicorp.com>" imported
-gpg: Total number processed: 1
-gpg:               imported: 1
-gpg: Signature made Fri Dec 17 18:46:17 2021 -03
-gpg:                using RSA key B36CBA91A2C0730C435FC280B0B441097685B676
-gpg: Good signature from "HashiCorp Security (hashicorp.com/security) <security@hashicorp.com>" [unknown]
-gpg: WARNING: This key is not certified with a trusted signature!
-gpg:          There is no indication that the signature belongs to the owner.
-Primary key fingerprint: C874 011F 0AB4 0511 0D02  1055 3436 5D94 72D7 468F
-     Subkey fingerprint: B36C BA91 A2C0 730C 435F  C280 B0B4 4109 7685 B676
-terraform_1.1.2_darwin_amd64.zip: OK
-Cleaning terraform previous binaries
-Creating terraform bin directory
+Downloading terraform version 1.1.2 from ...
+... output suprimido
 Extracting terraform archive
 
 # instalando uma versão específica:
 [vitorjr@0x564a520a ~]$ asdf install terraform 0.15.5
-Downloading terraform version 0.15.5 from https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_darwin_amd64.zip
-Verifying signatures and checksums
-gpg: keybox '/var/folders/5q/qbppj_gx30s7f4z_535ddh_m0000gn/T/asdf_terraform_il9RS4/pubring.kbx' created
-gpg: /var/folders/5q/qbppj_gx30s7f4z_535ddh_m0000gn/T/asdf_terraform_il9RS4/trustdb.gpg: trustdb created
-gpg: key 34365D9472D7468F: public key "HashiCorp Security (hashicorp.com/security) <security@hashicorp.com>" imported
-gpg: Total number processed: 1
-gpg:               imported: 1
-gpg: Signature made Wed Jun  2 14:50:56 2021 -03
-gpg:                using RSA key B36CBA91A2C0730C435FC280B0B441097685B676
-gpg: Good signature from "HashiCorp Security (hashicorp.com/security) <security@hashicorp.com>" [unknown]
-gpg: WARNING: This key is not certified with a trusted signature!
-gpg:          There is no indication that the signature belongs to the owner.
-Primary key fingerprint: C874 011F 0AB4 0511 0D02  1055 3436 5D94 72D7 468F
-     Subkey fingerprint: B36C BA91 A2C0 730C 435F  C280 B0B4 4109 7685 B676
-terraform_0.15.5_darwin_amd64.zip: OK
-Cleaning terraform previous binaries
-Creating terraform bin directory
+Downloading terraform version 0.15.5 from ...
+... output suprimido
 Extracting terraform archive
 
 # definindo sua versão global (default) de terraform:
@@ -167,7 +138,8 @@ terraform 0.15.5
 # escopo shell atual:
 # não importando a pasta que você está, se quiser alterar
 # a versão no shell atual, execute: asdf shell terraform <version>:
-# (para retornar a versão global, encerre a sessão ou execute novamente seu shell - bash, zsh, etc...)
+## para retornar a versão global:
+# encerre a sessão ou execute novamente seu shell - bash, zsh, etc...)
 [vitorjr@0x564a520a ~]$ terraform --version
 Terraform v1.1.2
 on darwin_amd64
