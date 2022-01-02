@@ -313,3 +313,6 @@ module.vpc.aws_vpc.this[0]: Creating...
 - A limpeza do ambiente pode ser feita de duas maneiras:
   - `terraform destroy`
   - `localstack stop` - Ao reiniciar o `localstack` a estrutura não estará presente, pois a mesma é efêmera.
+
+### Mais informações, usabilidade, exemplos:
+- Verifique o site do [`localstack`](https://localstack.cloud/) e também o [repositório](çhttps://github.com/localstack/localstack) do pacote.
