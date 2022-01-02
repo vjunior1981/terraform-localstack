@@ -6,7 +6,7 @@
 
 ## Preparando o ambiente:
 ### asdf:
-- [`asdf`](https://asdf-vm.com/) é um gerenciador que permite a instalacão de múltiplos plugins (e o melhor, com múltiplas versões).
+- [`asdf`](https://asdf-vm.com/) é um gerenciador que permite a instalação de múltiplos plugins (e o melhor, com múltiplas versões).
 #### Instalando o `asdf`:
 ```bash
 ## instalando asdf com git (universal installer):
@@ -147,6 +147,169 @@ on darwin_amd64
 [vitorjr@0x564a520a ~]$ terraform --version
 Terraform v0.15.5
 on darwin_amd64
-
-
 ```
+### awscli:
+- [`awscli`](https://github.com/aws/aws-cli) é a linha de comando para interação com a API AWS.
+#### Instalando o `awscli`:
+```bash
+# instalando a última versão do pip:
+[vitorjr@0x564a520a ~]$ which python3
+/Users/vitorjr/.asdf/shims/python3
+[vitorjr@0x564a520a ~]$ curl -fsSl https://bootstrap.pypa.io/get-pip.py|python3 --
+Collecting pip
+  Using cached pip-21.3.1-py3-none-any.whl (1.7 MB)
+Collecting wheel
+  Using cached wheel-0.37.1-py2.py3-none-any.whl (35 kB)
+Installing collected packages: wheel, pip
+  Attempting uninstall: pip
+    Found existing installation: pip 21.1.1
+    Uninstalling pip-21.1.1:
+      Successfully uninstalled pip-21.1.1
+Successfully installed pip-21.3.1 wheel-0.37.1
+## atualizando a localização dos pacotes baixados por uma
+# instalação asdf:
+# esta operação deve ser feita sempre que um pacote de um plugin
+# for instalado. ex:
+# pip - python
+# gem - ruby
+# go get - golang
+# etc...
+[vitorjr@0x564a520a ~]$ asdf reshim python
+## instalando o localstack e atualizando a localização do pacote:
+[vitorjr@0x564a520a ~]$ pip install awscli
+Collecting awscli
+... output suprimido
+[vitorjr@0x564a520a ~]$ asdf reshim python
+# verificando se a instalação está ok:
+[vitorjr@0x564a520a ~]$ aws --version
+aws-cli/2.4.7 Python/3.9.9 Darwin/21.2.0 source/x86_64 prompt/off
+# configurando uma conta local para uso com o localstack:
+# (as credenciais podem ser qualquer valor)
+# (pode ser alterada a região e formato de output)
+[vitorjr@0x564a520a ~]$ aws configure --profile=localstack
+AWS Access Key ID [****************tack]: localstack
+AWS Secret Access Key [****************tack]: localstack
+Default region name [us-west-2]: us-west-2
+Default output format [json]: json
+```
+
+### localstack:
+- [`localstack`](https://localstack.cloud/) é um framework que ajuda no desenvolvimento de aplicações com foco em cloud, simulando um ambiente AWS.
+#### Instalando o `localstack` e `awscli-local`:
+- Antes de instalar o `localstack` é necessário ter o [docker instalado e rodando](https://docs.docker.com/engine/install/).
+- [`awscli-local`](https://github.com/localstack/awscli-local) é um pacote disponibilizado pelo `localstack` para facilitar o uso da 'cloud local'.
+```bash
+## instalando o localstack e atualizando a localização do pacote:
+[vitorjr@0x564a520a ~]$ pip install localstack
+Collecting localstack
+  Using cached localstack-0.13.2.1-py3-none-any.whl (537 kB)
+... output suprimido
+[vitorjr@0x564a520a ~]$ pip install awscli-local
+Collecting awscli-local
+  Using cached awscli_local-0.17-py3-none-any.whl
+... output suprimido
+[vitorjr@0x564a520a ~]$ asdf reshim python
+# verificando se a instalação está ok:
+[vitorjr@0x564a520a ~]$ localstack --version
+0.13.2.1
+[vitorjr@0x564a520a ~]$ awslocal --version
+aws-cli/1.22.26 Python/3.8.12 Darwin/21.2.0 botocore/1.23.26
+# para facilitar a utilização do localstack e awslocal
+# crie alias para ambos utilizarem o perfil criado no awscli.
+# coloque essas entradas no seu .bashrc ou .zshrc:
+alias awslocal='AWS_PROFILE=localstack awslocal'
+alias localstack='AWS_PROFILE=localstack localstack'
+```
+#### Iniciando o `localstack`:
+```bash
+# a primeira inicialização pode demorar pois é necessário
+# baixar a imagem do docker hub:
+[vitorjr@0x564a520a ~]$ localstack start -d
+
+     __                     _______ __             __
+    / /   ____  _________ _/ / ___// /_____ ______/ /__
+   / /   / __ \/ ___/ __ `/ /\__ \/ __/ __ `/ ___/ //_/
+  / /___/ /_/ / /__/ /_/ / /___/ / /_/ /_/ / /__/ ,<
+ /_____/\____/\___/\__,_/_//____/\__/\__,_/\___/_/|_|
+
+ 💻 LocalStack CLI 0.13.2.1
+
+[12:36:43] starting LocalStack in Docker mode 🐳             localstack.py:115
+2022-01-02T12:36:43.777:INFO:bootstrap.py...
+           preparing environment                             bootstrap.py:707
+           configuring container                             bootstrap.py:715
+           starting container                                bootstrap.py:721
+[12:36:44] detaching                                         bootstrap.py:725
+
+# verificando o status dos serviços
+[vitorjr@0x564a520a ~]$ localstack status services
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┓
+┃ Service                  ┃ Status      ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━┩
+│ acm                      │ ✔ available │
+│ apigateway               │ ✔ available │
+│ cloudformation           │ ✔ available │
+│ cloudwatch               │ ✔ available │
+│ config                   │ ✔ available │
+│ dynamodb                 │ ✔ available │
+│ dynamodbstreams          │ ✔ available │
+│ ec2                      │ ✔ running   │
+... output suprimido
+```
+
+#### Criando a primeira estrutura com o terraform:
+- Clone este repositório:
+```bash
+git clone https://github.com/vjunior1981/terraform-localstack.git
+```
+- Não esqueça de exportar as variáveis necessárias para garantir o uso do `localstack`:
+```bash
+# nem todas variáveis aqui são necessárias, no entanto, gosto de exportar para garantir:
+[vitorjr@0x564a520a ~]$ cd terraform-localstack
+[vitorjr@0x564a520a ~]$ export AWS_DEFAULT_REGION="us-west-2"
+[vitorjr@0x564a520a ~]$ export AWS_PROFILE="localstack"
+[vitorjr@0x564a520a ~]$ export AWS_ACCESS_KEY_ID=${AWS_PROFILE}
+[vitorjr@0x564a520a ~]$ export AWS_SECRET_ACCESS_KEY=${AWS_PROFILE}
+[vitorjr@0x564a520a ~]$ export TF_VAR_aws_access_key=${AWS_PROFILE}
+[vitorjr@0x564a520a ~]$ export TF_VAR_aws_secret_key=${AWS_PROFILE}
+```
+- Existe um arquivo nesse repositório chamado `.envrc`, ele é utilizado pelo [`direnv`](https://github.com/asdf-community/asdf-direnv) para carregar as variáveis automaticamente. Se desejar que isso ocorra, instale o `direnv` (pode ser via `asdf`) e verifique a documentação de como utilizar o mesmo.
+- Inicialize, formate, valide, planeje e aplique seus arquivos de configuração com o `terraform`:
+  - Adicionei o arquivo `.terraform.lock.hcl` ao `.gitignore` apenas nesse repositório.
+  - A boa prática é manter esse arquivo versionado, pois ele que controla o lock de versões de providers utilizados.
+```bash
+[vitorjr@0x564a520a ~]$ cd terraform-example
+[vitorjr@0x564a520a ~]$ terraform init
+Initializing modules...
+... output suprimido
+[vitorjr@0x564a520a ~]$ terraform fmt
+[vitorjr@0x564a520a ~]$ terraform validate
+Success! The configuration is valid.
+[vitorjr@0x564a520a ~]$ terraform plan -out=local.tfplan
+terraform plan -out=local.tfplan
+
+Terraform used the selected ...
+... output suprimido
+[vitorjr@0x564a520a ~]$ terraform apply "local.tfplan"
+module.vpc.aws_vpc.this[0]: Creating...
+... output suprimido
+```
+- Validando que a estrutura foi criada localmente:
+```bash
+# com os campos OwnerId retornando "000000000000" sabemos que são recursos locais
+[vitorjr@0x564a520a ~]$ awslocal ec2 describe-instances|grep -E '"InstanceId":|"OwnerId":'
+                    "InstanceId": "i-f4ddc8482c610ec8d",
+                            "OwnerId": "000000000000",
+            "OwnerId": "000000000000",
+                    "InstanceId": "i-3457355a702152fda",
+                            "OwnerId": "000000000000",
+            "OwnerId": "000000000000",
+
+[vitorjr@0x564a520a ~]$ awslocal s3 ls
+2022-01-02 15:12:48 my-tf-test-bucket
+```
+
+### Limpando o ambiete:
+- A limpeza do ambiente pode ser feita de duas maneiras:
+  - `terraform destroy`
+  - `localstack stop` - Ao reiniciar o `localstack` a estrutura não estará presente, pois a mesma é efêmera.
